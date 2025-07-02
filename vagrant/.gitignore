@@ -1,0 +1,5 @@
+.vagrant/
+*.log
+vagrant/.DS_Store
+vagrant/apache/.DS_Store
+vagrant/apache/sites-available/.DS_Store

@@ -1,0 +1,19 @@
+# Symlink file to /etc/logrotate.d
+# File must be owned by root with permissions of 644
+/var/www/example/application/logs/*log {
+    compress
+    create
+    daily
+    dateext
+    dateyesterday
+    missingok
+    olddir ./archive
+    rotate 7
+    sharedscripts
+    su root
+    postrotate
+        if /etc/init.d/apache2 status > /dev/null ; then \
+            /etc/init.d/apache2 reload > /dev/null; \
+        fi;
+    endscript
+}

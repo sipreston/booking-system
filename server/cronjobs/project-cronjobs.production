@@ -1,0 +1,35 @@
+##############################################################################################
+# To quickly find the timings of a cron schedule expression, please use https://crontab.guru/
+##############################################################################################
+
+########################################
+############# CHEATSHEET ###############
+########################################
+# * * * * * command to be executed
+# – – – – –
+# | | | | |
+# | | | | +—– day of week (0 – 6) (Sunday=0)
+# | | | +——- month (1 – 12)
+# | | +——— day of month (1 – 31)
+# | +———– hour (0 – 23)
+# +————- min (0 – 59)
+
+# Make sure you change any paths of scripts to suit the project.
+
+# Don't send any cron emails!
+MAILTO=""
+
+# Run the Laravel Scheduler (if creating a Laravel application. Remove if not)
+#   Please check /var/www/example/application/app/Console/Kernel.php
+#   for the following commands running:
+#   - ot:purge-system-log-entries runs every day at 00:00
+#   - ot:purge-api-audit-log-entries runs every day at 01:00
+#   - ot:purge-ip-trace-entries runs every day at 02:00
+#   - ot:scale-down-api-audit-log-entries runs every day at 03:00
+#   - ot:scale-down-system-log-entries runs every day at 04:00
+# Runs at minute 0 of every hour to check which console commands to run
+# 0 * * * * 3ev php /var/www/exammple/application/artisan schedule:run 1>> /dev/null 2>&1
+
+# Check the disk space usage on the server isn't dangerously high. Alert if so.
+# The default is once a day at 6am, but you can tweak that to suit the needs of the server.
+0 6 * * * 3ev /var/www/example/server/scripts/diskspace-alert.sh
