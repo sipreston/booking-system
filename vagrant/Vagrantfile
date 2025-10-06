@@ -33,7 +33,7 @@ Vagrant.configure("2") do |config|
     config.vm.provision "shell", path: "./provision-scripts/upgrade.sh", privileged: true
     config.vm.provision "shell", path: "./provision-scripts/apache.sh", privileged: true
 
-    config.vm.provision "shell", path: "./provision-scripts/mysql-8.sh", privileged: true
+    config.vm.provision "shell", path: "./provision-scripts/mariadb.sh", privileged: true
 
     config.vm.provision "shell", path: "./provision-scripts/php-8.sh", privileged: true
     config.vm.provision "shell", path: "./provision-scripts/enable-default-php-environment-version.sh", privileged: true
@@ -47,7 +47,7 @@ Vagrant.configure("2") do |config|
 
     config.vm.provision "shell", path: "./provision-scripts/node-nvm-npm.sh", privileged: false
 
-    config.vm.provision "shell", path: "./provision-scripts/mailhog.sh", privileged: true
+    config.vm.provision "shell", path: "./provision-scripts/mailpit.sh", privileged: true
 
     config.vm.provision "shell", path: "./provision-scripts/enable-application.sh", privileged: true
     config.vm.provision "shell", path: "./provision-scripts/clean-up.sh", privileged: true
