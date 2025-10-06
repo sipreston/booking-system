@@ -1,0 +1,22 @@
+<?php
+
+namespace App\Models\Finance;
+
+use App\Models\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+
+class Payment extends Model
+{
+    public $timestamps = false;
+
+    protected $casts = [
+        'created_at' => 'date',
+        'amount_in_pence' => 'integer',
+        'notes' => 'array',
+    ];
+
+    public function invoice(): BelongsTo
+    {
+        return $this->belongsTo(Invoice::class);
+    }
+}

@@ -11,19 +11,6 @@ return new class extends Migration
      */
     public function up(): void
     {
-//        Schema::create('countries', function (Blueprint $table) {
-//            $table->id();
-//            $table->timestamps();
-//            $table->string('name', 256);
-//            $table->string('code', 8);
-//            $table->string('iso', 2);
-//            $table->string('nice_name', 256);
-//            $table->string('iso3', 3)->nullable();
-//            $table->string('num_code')->nullable();
-//            $table->string('phone_code', 11);
-//            $table->string('nationality_name', 256)->nullable();
-//        });
-
         Schema::create('owners', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
@@ -38,9 +25,10 @@ return new class extends Migration
             $table->string('county', 128)->nullable();
             $table->string('state', 128)->nullable();
             $table->string('post_code', 128)->nullable();
-            $table->string('country_id', 128)->nullable();
+            $table->foreignId('country_id')->nullable();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('set null')->onUpdate('cascade');
+            $table->foreign('country_id')->references('id')->on('countries')->onDelete('set null')->onUpdate('set null');
         });
 
         Schema::create('properties', function (Blueprint $table) {
@@ -95,6 +83,7 @@ return new class extends Migration
             $table->id();
             $table->timestamps();
             $table->string('type', 128);
+            $table->longText('description')->nullable();
         });
 
         Schema::create('units', function (Blueprint $table) {
@@ -112,6 +101,7 @@ return new class extends Migration
             $table->id();
             $table->timestamps();
             $table->string('type', 128);
+            $table->longText('description')->nullable();
         });
 
         Schema::create('rooms', function (Blueprint $table) {
@@ -127,10 +117,13 @@ return new class extends Migration
 
         Schema::create('extras', function (Blueprint $table) {
             $table->id();
+            $table->timestamps();
             $table->string('name', 128);
+            $table->longText('description')->nullable();
         });
 
         Schema::create('property_extra', function (Blueprint $table) {
+            $table->timestamps();
             $table->foreignId('property_id');
             $table->foreignId('extra_id');
             $table->integer('cost_in_pence');
@@ -156,10 +149,13 @@ return new class extends Migration
 
         Schema::create('amenities', function (Blueprint $table) {
             $table->id();
+            $table->timestamps();
             $table->string('name', 128);
+            $table->longText('description')->nullable();
         });
 
         Schema::create('property_amenities', function (Blueprint $table) {
+            $table->timestamps();
             $table->foreignId('property_id');
             $table->foreignId('amenity_id');
             $table->integer('cost_in_pence');
@@ -183,6 +179,8 @@ return new class extends Migration
             $table->integer('vat_rate')->nullable();
             $table->string('contact_email', 128)->nullable();
             $table->string('contact_phone', 20)->nullable();
+            $table->integer('check_in_time');
+            $table->integer('check_out_time');
 
             $table->foreign('customer_id')->references('id')->on('customers')->onUpdate('cascade')->onDelete('set null');
             $table->foreign('property_id')->references('id')->on('properties')->onUpdate('cascade')->onDelete('set null');
@@ -214,6 +212,7 @@ return new class extends Migration
             $table->foreignId('booking_id')->nullable();
             $table->date('payment_due_date');
             $table->integer('cost_in_pence');
+            $table->double('vat_rate');
             $table->json('lines');
 
             $table->foreign('booking_id')->references('id')->on('bookings')->onUpdate('cascade')->onDelete('set null');
