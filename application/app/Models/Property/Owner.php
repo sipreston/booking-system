@@ -12,7 +12,7 @@ class Owner extends Model
     protected $casts = [
         'first_name' => 'string',
         'last_name' => 'string',
-        'email' => 'email',
+        'email' => 'string',
         'phone' => 'string',
         'address_line_1' => 'string',
         'address_line_2' => 'string',
