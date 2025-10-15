@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class PropertyAvailability extends Model
 {
+    protected $guarded = [];
+
     protected $casts = [
         'date' => 'date',
     ];

@@ -7,6 +7,11 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class PropertyExtra extends Model
 {
+    public $table = 'property_extra';
+    public $timestamps = false;
+
+    protected $guarded = [];
+
     protected $casts = [
         'cost_in_pence' => 'integer',
         'is_active' => 'boolean',

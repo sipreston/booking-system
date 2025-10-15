@@ -10,4 +10,12 @@ class BaseAPIController extends Controller
     {
 
     }
+
+    protected function errorResponse(string $message, $code = null)
+    {
+        return response()->json([
+            'success' => false,
+            'message' => $message,
+        ]);
+    }
 }

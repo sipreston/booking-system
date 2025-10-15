@@ -30,6 +30,11 @@ class Property extends Model
         return $this->belongsTo(Country::class, 'country_id');
     }
 
+    public function units(): HasMany
+    {
+        return $this->hasMany(Unit::class, 'property_id');
+    }
+
     public function extras(): HasMany
     {
         return $this->hasMany(PropertyExtra::class, 'property_id');

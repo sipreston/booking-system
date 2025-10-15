@@ -7,6 +7,11 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class PropertyAmenity extends Model
 {
+    public $timestamps = false;
+
+    public $table = 'property_amenities';
+    protected $guarded = [];
+
     protected $casts = [
         'cost_in_pence' => 'integer',
         'is_active' => 'boolean',

@@ -5,9 +5,14 @@ namespace App\Http\Controllers\API\Property;
 use App\Http\Controllers\API\BaseAPIController;
 use App\Http\Resources\Property\PropertyResource;
 use App\Models\Country;
+use App\Models\Property\Amenity;
+use App\Models\Property\Extra;
 use App\Models\Property\Owner;
 use App\Models\Property\Property;
+use App\Models\Property\Room;
+use App\Models\Property\Unit;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class PropertyController extends BaseAPIController
 {
@@ -97,12 +102,87 @@ class PropertyController extends BaseAPIController
 
         $property->save();
 
-        if (empty ($property)) {
+        if (empty($property->slug)) {
             $property->createSlugAndSave();
         }
 
+        if (! empty($request->units)) {
+            foreach ($request->units as $unit) {
+                $unitModel = Unit::where('property_id', '=', $property->id)
+                    ->where('identifier', '=', $unit['identifier'])
+                    ->first();
+
+                if(! $unitModel) {
+                    $unitModel = new Unit();
+                    $unitModel->property_id = $property->id;
+                    $unitModel->identifier = $unit['identifier'];
+                    $unitModel->save();
+                }
+
+                if (! empty($unit['rooms'])) {
+                    foreach ($unit['rooms'] as $room) {
+                        $roomModel = Room::where('unit_id' , '=', $unitModel->id)
+                            ->where('identifier', '=', $room['identifier'])
+                            ->first();
+
+                        if (! $roomModel) {
+                            $roomModel = new Room();
+                            $roomModel->unit_id = $unitModel->id;
+                            $roomModel->identifier = $room['identifier'];
+                        }
+
+                        $roomModel->save();
+                    }
+                }
+            }
+        }
+
+        DB::table('property_extra')->where('property_id', $property->id)->delete();
+
+        if (! empty($request->extras)) {
+            $inserts = [];
+            foreach ($request->extras as $extra) {
+                if (! $extraModel = Extra::where('code', $extra['code'])->first()) {
+                    continue;
+                }
+
+                $inserts[] = [
+                    'property_id' => $property->id,
+                    'extra_id' => $extraModel->id,
+                    'cost_in_pence' => $extra['price'],
+                    'quantity_available' => $extra['quantity_available'],
+                    'details' => $extra['details'],
+                    'is_active' => $extra['available'],
+                ];
+            }
+
+            DB::table('property_extra')->insert($inserts);
+        }
+
+        DB::table('property_amenities')->where('property_id', $property->id)->delete();
+
+        if (! empty($request->amenities)) {
+            $inserts = [];
+
+            foreach ($request->amenities as $amenity) {
+                if (! $amenityModel = Amenity::where('code', $amenity['code'])->first()) {
+                    continue;
+                }
+
+                $inserts[] = [
+                    'property_id' => $property->id,
+                    'amenity_id' => $amenityModel->id,
+                    'cost_in_pence' => $amenity['price'],
+                    'details' => $amenity['details'],
+                    'is_active' => $amenity['available'],
+                ];
+            }
+
+            DB::table('property_amenities')->insert($inserts);
+        }
+
         return response()->json([
-            'property' => new PropertyResource($property)
+            'resource' => new PropertyResource($property)
         ]);
     }
 

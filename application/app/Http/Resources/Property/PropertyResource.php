@@ -36,8 +36,30 @@ class PropertyResource extends JsonResource
                 'last_name' => $property->owner->last_name,
                 'email' => $property->owner->email,
                 'phone' => $property->owner->phone,
-            ]
+            ],
+            'units' => [],
+            'extras' => [],
+            'amenities' => [],
+
         ];
+
+        foreach ($property->units as $unit) {
+            $unitData = $unit->toArray();
+            $unitData['rooms'] = [];
+            foreach ($unit->rooms as $room) {
+                $unitData['rooms'][] = $room->toArray();
+            }
+
+            $data['units'][] = $unitData;
+        }
+
+        foreach ($property->extras as $extra) {
+            $data['extras'][] = $extra->toArray();
+        }
+
+        foreach ($property->amenities as $amenity) {
+            $data['amenities'][] = $amenity->toArray();
+        }
 
         return $data;
     }

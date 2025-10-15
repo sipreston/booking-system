@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\API\Owner\OwnerController;
+use App\Http\Controllers\API\Property\AvailabilityController;
 use App\Http\Controllers\API\Property\PropertyController;
 use App\Http\Controllers\API\TestController;
 use Illuminate\Support\Facades\Route;
@@ -7,11 +9,17 @@ use Illuminate\Support\Facades\Route;
 Route::get('test', [TestController::class, 'test'])->name('api.test');
 
 // Properties
-Route::get('property/{property}', [PropertyController::class, 'getProperty'])->name('api.property.get');
-Route::post('property/create', [PropertyController::class, 'createProperty'])->name('api.property.create');
+Route::get('property/{property}', [PropertyController::class, 'get'])->name('api.property.get');
+Route::post('property/create', [PropertyController::class, 'create'])->name('api.property.create');
+Route::post('property/{property}/update', [PropertyController::class, 'update'])->name('api.property.update');
+
+Route::post('property/{property}/availability', [AvailabilityController::class, 'setForProperty'])->name('api.property.availability.set');
 // Amenities
 
 // Owners
+Route::get('owner/{owner}', [OwnerController::class, 'get'])->name('api.owner.get');
+Route::post('owner/create', [OwnerController::class, 'create'])->name('api.owner.create');
+Route::post('owner/{owner}/update', [OwnerController::class, 'update'])->name('api.owner.update');
 
 // Customers
 

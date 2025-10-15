@@ -21,6 +21,6 @@ class Unit extends Model
 
     public function rooms(): HasMany
     {
-        return $this->hasMany(Room::class, 'room_id');
+        return $this->hasMany(Room::class, 'unit_id');
     }
 }
