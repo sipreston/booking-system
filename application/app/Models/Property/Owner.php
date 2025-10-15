@@ -9,6 +9,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Owner extends Model
 {
+    protected $guarded = [];
+
     protected $casts = [
         'first_name' => 'string',
         'last_name' => 'string',

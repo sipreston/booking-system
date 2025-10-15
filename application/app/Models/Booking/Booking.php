@@ -12,6 +12,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Booking extends Model
 {
+    protected $guarded = [];
+
     protected $casts = [
         'date_from' => 'date',
         'date_to' => 'date',

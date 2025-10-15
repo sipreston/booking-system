@@ -9,6 +9,8 @@ class Refund extends Model
 {
     public $timestamps = false;
 
+    protected $guarded = [];
+
     protected $casts = [
         'created_at' => 'date',
         'amount_in_pence' => 'integer',
