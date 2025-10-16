@@ -83,6 +83,7 @@ return new class extends Migration
             $table->id();
             $table->timestamps();
             $table->string('type', 128);
+            $table->string('code', 16)->unique();
             $table->longText('description')->nullable();
         });
 
@@ -101,6 +102,7 @@ return new class extends Migration
             $table->id();
             $table->timestamps();
             $table->string('type', 128);
+            $table->string('code', 16)->unique();
             $table->longText('description')->nullable();
         });
 
@@ -138,13 +140,12 @@ return new class extends Migration
         Schema::create('property_availability', function (Blueprint $table) {
             $table->foreignId('property_id');
             $table->foreignId('unit_id');
-            $table->foreignId('room_id');
             $table->date('date');
             $table->string('status');
+            $table->integer('cost_in_pence')->nullable()->comment('The price for the day');;
 
             $table->foreign('property_id')->references('id')->on('properties')->onUpdate('cascade')->onDelete('cascade');
             $table->foreign('unit_id')->references('id')->on('units')->onUpdate('cascade')->onDelete('cascade');
-            $table->foreign('room_id')->references('id')->on('rooms')->onUpdate('cascade')->onDelete('cascade');
         });
 
         Schema::create('amenities', function (Blueprint $table) {
