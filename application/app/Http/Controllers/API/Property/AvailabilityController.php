@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API\Property;
 use App\Exceptions\API\Property\PropertyException;
 use App\Http\Controllers\API\BaseAPIController;
 use App\Http\Resources\Property\AvailabilityResource;
+use App\Models\Property\AvailabilityStatus;
 use App\Models\Property\Property;
 use App\Models\Property\PropertyAvailability;
 use App\Models\Property\Unit;
@@ -19,7 +20,7 @@ class AvailabilityController extends BaseAPIController
     {
         $request->validate([]);
 
-        return response()->json([
+        return $this->successResponse([
             'resource' => new AvailabilityResource($property),
         ]);
     }
@@ -50,7 +51,11 @@ class AvailabilityController extends BaseAPIController
                 foreach ($unit_data['dates'] as $date_data) {
                     $date_from = Carbon::createFromFormat($date_format, $date_data['date_from'])->startOfDay();
                     $date_to = Carbon::createFromFormat($date_format, $date_data['date_to'])->startOfDay();
-                    $status = $date_data['status'] ?? 'blocked'; // fallback if no status provided
+                    $status = $date_data['status'];
+
+                    if (! $status || ! AvailabilityStatus::exists($status)) {
+                        $status = 'blocked'; // fallback if no status provided or is invalid
+                    }
 
                     $date_period = new CarbonPeriod($date_from, $date_to);
 
@@ -81,7 +86,7 @@ class AvailabilityController extends BaseAPIController
 
         }
 
-        return response()->json([
+        return $this->successResponse([
             'resource' => new AvailabilityResource($property),
         ]);
     }

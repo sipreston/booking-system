@@ -27,7 +27,7 @@ class PropertyController extends BaseAPIController
 
         ]);
 
-        return response()->json([
+        return $this->successResponse([
             'resource' => new PropertyResource($property),
         ]);
     }
@@ -207,7 +207,7 @@ class PropertyController extends BaseAPIController
             DB::table('property_amenities')->insert($inserts);
         }
 
-        return response()->json([
+        return $this->successResponse([
             'resource' => new PropertyResource($property)
         ]);
     }
@@ -222,7 +222,7 @@ class PropertyController extends BaseAPIController
 
         $property->save();
 
-        return response()->json([
+        return $this->successResponse([
             'success' => true,
         ]);
     }

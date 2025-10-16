@@ -11,6 +11,11 @@ class BaseAPIController extends Controller
 
     }
 
+    protected function successResponse(array $data, $code = null)
+    {
+        return response()->json($data);
+    }
+
     protected function errorResponse(string $message, $code = null)
     {
         return response()->json([
