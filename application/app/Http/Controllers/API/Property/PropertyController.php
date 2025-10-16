@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers\API\Property;
 
+use App\Exceptions\API\Property\PropertyException;
+use App\Exceptions\API\Property\RoomTypeException;
+use App\Exceptions\API\Property\UnitTypeException;
 use App\Http\Controllers\API\BaseAPIController;
 use App\Http\Resources\Property\PropertyResource;
 use App\Models\Country;
@@ -10,7 +13,9 @@ use App\Models\Property\Extra;
 use App\Models\Property\Owner;
 use App\Models\Property\Property;
 use App\Models\Property\Room;
+use App\Models\Property\RoomType;
 use App\Models\Property\Unit;
+use App\Models\Property\UnitType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -99,6 +104,7 @@ class PropertyController extends BaseAPIController
         }
 
         $property->owner_id = $owner->id;
+        $property->is_active = $request->available ?? false;
 
         $property->save();
 
@@ -108,30 +114,47 @@ class PropertyController extends BaseAPIController
 
         if (! empty($request->units)) {
             foreach ($request->units as $unit) {
-                $unitModel = Unit::where('property_id', '=', $property->id)
+                if (! $unit_type = UnitType::where('code', '=', $unit['type_code'])->first()) {
+                    $message = "Unable to determine unit type from code " . $unit['type_code'] . ".\n
+                                Valid types are " . implode(", ", UnitType::getAllTypeCodes()) . ".";
+
+                    throw new UnitTypeException($message);
+                }
+
+                $unit_model = Unit::where('property_id', '=', $property->id)
                     ->where('identifier', '=', $unit['identifier'])
                     ->first();
 
-                if(! $unitModel) {
-                    $unitModel = new Unit();
-                    $unitModel->property_id = $property->id;
-                    $unitModel->identifier = $unit['identifier'];
-                    $unitModel->save();
+                if(! $unit_model) {
+                    $unit_model = new Unit();
+                    $unit_model->property_id = $property->id;
                 }
+
+                $unit_model->identifier = $unit['identifier'];
+                $unit_model->unit_type_id = $unit_type->id;
+                $unit_model->save();
 
                 if (! empty($unit['rooms'])) {
                     foreach ($unit['rooms'] as $room) {
-                        $roomModel = Room::where('unit_id' , '=', $unitModel->id)
+                        if (! $room_type = RoomType::where('code', '=', $room['type_code'])->first()) {
+                            $message = "Unable to determine room type from code " . $room['type_code'] . ".\n
+                                Valid types are " . implode(", ", RoomType::getAllTypeCodes()) . ".";
+
+                            throw new RoomTypeException($message);
+                        }
+
+                        $room_model = Room::where('unit_id' , '=', $unit_model->id)
                             ->where('identifier', '=', $room['identifier'])
                             ->first();
 
-                        if (! $roomModel) {
-                            $roomModel = new Room();
-                            $roomModel->unit_id = $unitModel->id;
-                            $roomModel->identifier = $room['identifier'];
+                        if (! $room_model) {
+                            $room_model = new Room();
+                            $room_model->unit_id = $unit_model->id;
                         }
 
-                        $roomModel->save();
+                        $room_model->room_type_id = $room_type->id;
+                        $room_model->identifier = $room['identifier'];
+                        $room_model->save();
                     }
                 }
             }

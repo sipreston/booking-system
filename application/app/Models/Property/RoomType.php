@@ -2,9 +2,16 @@
 
 namespace App\Models\Property;
 
-class RoomType
+use App\Models\Model;
+
+class RoomType extends Model
 {
     protected $casts = [];
 
     protected $guarded = [];
+
+    public static function getAllTypeCodes(): array
+    {
+        return self::all()->pluck('type_code')->toArray();
+    }
 }
