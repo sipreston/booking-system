@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class PropertyAvailability extends Model
 {
+    public $table = 'property_availability';
+
     protected $guarded = [];
 
     protected $casts = [

@@ -45,6 +45,10 @@ class PropertyController extends BaseAPIController
 
     public function update(Request $request, Property $property)
     {
+        if (! $property->id) {
+            throw new PropertyException("Property not found");
+        }
+
         $request->validate([
 
         ]);
@@ -137,8 +141,7 @@ class PropertyController extends BaseAPIController
                 if (! empty($unit['rooms'])) {
                     foreach ($unit['rooms'] as $room) {
                         if (! $room_type = RoomType::where('code', '=', $room['type_code'])->first()) {
-                            $message = "Unable to determine room type from code " . $room['type_code'] . ".\n
-                                Valid types are " . implode(", ", RoomType::getAllTypeCodes()) . ".";
+                            $message = "Unable to determine room type from code " . $room['type_code'] . ". Valid types are " . implode(", ", RoomType::getAllTypeCodes()) . ".";
 
                             throw new RoomTypeException($message);
                         }

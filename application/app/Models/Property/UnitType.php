@@ -12,6 +12,6 @@ class UnitType extends Model
 
     public static function getAllTypeCodes(): array
     {
-        return self::all()->pluck('type_code')->toArray();
+        return self::all()->pluck('code')->toArray();
     }
 }

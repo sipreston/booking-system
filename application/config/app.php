@@ -123,4 +123,7 @@ return [
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
 
+    'date_format' => 'Y-m-d',
+    'date_time_format' => 'Y-m-d H:i:s',
+
 ];
