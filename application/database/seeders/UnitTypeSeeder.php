@@ -19,12 +19,7 @@ class UnitTypeSeeder extends Seeder
         ];
 
         foreach ($unit_types_array as $unit_type_data) {
-            $unit_type = new UnitType();
-            $unit_type->type = $unit_type_data['type'];
-            $unit_type->code = $unit_type_data['code'];
-            $unit_type->description = $unit_type_data['description'];
-
-            $unit_type->save();
+            UnitType::create($unit_type_data);
         }
     }
 }

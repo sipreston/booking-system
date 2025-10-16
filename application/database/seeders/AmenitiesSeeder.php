@@ -25,11 +25,7 @@ class AmenitiesSeeder extends Seeder
         ];
 
         foreach ($amenities as $amenity) {
-            $amenityModel = new Amenity();
-            $amenityModel->code = $amenity['code'];
-            $amenityModel->name = $amenity['name'];
-
-            $amenityModel->save();
+            Amenity::create($amenity);
         }
     }
 }

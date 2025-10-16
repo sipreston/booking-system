@@ -19,11 +19,7 @@ class ExtrasSeeder extends Seeder
         ];
 
         foreach ($extras as $extra) {
-            $extraModel = new Extra();
-            $extraModel->code = $extra['code'];
-            $extraModel->name = $extra['name'];
-
-            $extraModel->save();
+            Extra::create($extra);
         }
     }
 }

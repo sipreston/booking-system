@@ -26,12 +26,7 @@ class RoomTypeSeeder extends Seeder
         ];
 
         foreach ($room_types_array as $room_type_data) {
-            $room_type = new RoomType();
-            $room_type->type = $room_type_data['type'];
-            $room_type->description = $room_type_data['description'];
-            $room_type->code = $room_type_data['code'];
-
-            $room_type->save();
+            RoomType::create($room_type_data);
         }
     }
 }

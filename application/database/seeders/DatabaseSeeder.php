@@ -21,6 +21,7 @@ class DatabaseSeeder extends Seeder
             AmenitiesSeeder::class,
             RoomTypeSeeder::class,
             UnitTypeSeeder::class,
+            AvailabilityStatusSeeder::class,
         ]);
     }
 }
