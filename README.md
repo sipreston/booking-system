@@ -36,6 +36,12 @@ Contains server configuration files and provisional setup.
 Many projects need postman requests for testing, or connection to third party services. Store them in here, so they can be accessed by any devs, easily.
 
 # Usage
+## Requirements
+* You will need both vagrant and VirtualBox installed in order to run the virtual machine. Instructions on installing/troubleshooting those is not covered here.
+* It is recommended you install postman to use the API calls in the Postman directory.
+* MySQL Workbench is required to read the mwb files in the database directory.
+
+
 ## How to get going
 cd to the vagrant directory of the project and run ``vagrant up``. If this is the first time running the virtual machine, it will take a few minutes to provision the system, installing all the various packages and setting up the database server so that it is ready for use.
 Once this is complete the vagrant box will shut down. Run ``vagrant up`` again and it will now be ready for us. The provisioning will only need to be run once - or any time you delete the box and start afresh.
@@ -49,3 +55,5 @@ Once the box is running, run ``vagrant ssh`` to ssh in to the box. cd to the ``/
 
 On your host machine add the following entries to your /etc/hosts file
 * ``192.168.56.11 booking-system.in``
+
+Once the above is done, you should be able to send requests to the https://booking-system.in url in either your browser or postman and get a response,
