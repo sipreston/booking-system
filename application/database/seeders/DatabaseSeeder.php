@@ -19,6 +19,8 @@ class DatabaseSeeder extends Seeder
             CountrySeeder::class,
             ExtrasSeeder::class,
             AmenitiesSeeder::class,
+            RoomTypeSeeder::class,
+            UnitTypeSeeder::class,
         ]);
     }
 }
