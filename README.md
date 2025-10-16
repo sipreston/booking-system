@@ -37,6 +37,15 @@ Many projects need postman requests for testing, or connection to third party se
 
 # Usage
 ## How to get going
-Simply cd to the vagrant directory, in the project, and run Vagrant up. If this is the first time you are running the box, it will be provisioned, installing all the packages it needs to run the project. This can take around 10 minutes, depending on the speed of the host machine. It will then shutdown to finalise the set up. Run vagrant up again, and you will be good to go.
-However, in the base framework, everything will be labelled **example**. You will need to tweak the various areas which reference 'example' with the project name. This includes file names (such as the example.conf for the apache conf file).
-Once you have an idea of what you will need on your project, tweak the Vagrantfile, and add/remove provision scripts as required.
+cd to the vagrant directory of the project and run ``vagrant up``. If this is the first time running the virtual machine, it will take a few minutes to provision the system, installing all the various packages and setting up the database server so that it is ready for use.
+Once this is complete the vagrant box will shut down. Run ``vagrant up`` again and it will now be ready for us. The provisioning will only need to be run once - or any time you delete the box and start afresh.
+
+Once the box is running, run ``vagrant ssh`` to ssh in to the box. cd to the ``/var/www/booking-system/application`` directory and run the following in sequence.
+* ``composer install``
+* ``php artisan migrate``
+* ``php artisan db:seed``
+* ``npm ci``
+* ``npm run build``
+
+On your host machine add the following entries to your /etc/hosts file
+* ``192.168.56.11 booking-system.in``
