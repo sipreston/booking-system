@@ -125,6 +125,7 @@ return new class extends Migration
         });
 
         Schema::create('property_extra', function (Blueprint $table) {
+            $table->id();
             $table->timestamps();
             $table->foreignId('property_id');
             $table->foreignId('extra_id');
@@ -138,6 +139,8 @@ return new class extends Migration
         });
 
         Schema::create('property_availability', function (Blueprint $table) {
+            $table->id();
+            $table->timestamps();
             $table->foreignId('property_id');
             $table->foreignId('unit_id');
             $table->date('date');
@@ -156,6 +159,7 @@ return new class extends Migration
         });
 
         Schema::create('property_amenities', function (Blueprint $table) {
+            $table->id();
             $table->timestamps();
             $table->foreignId('property_id');
             $table->foreignId('amenity_id');
@@ -190,6 +194,7 @@ return new class extends Migration
         });
 
         Schema::create('booking_guests', function (Blueprint $table) {
+            $table->id();
             $table->foreignId('booking_id')->nullable();
             $table->string('first_name', 64);
             $table->string('last_name', 64);
@@ -200,6 +205,7 @@ return new class extends Migration
         });
 
         Schema::create('booking_revisions', function (Blueprint $table) {
+            $table->id();
             $table->foreignId('booking_id')->nullable();
             $table->dateTime('created_at');
             $table->json('flattened_data');
